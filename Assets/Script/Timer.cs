@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static GameMenager;
 
 public class Timer : MonoBehaviour
@@ -10,12 +11,27 @@ public class Timer : MonoBehaviour
 
 
     [SerializeField] private TextMeshProUGUI TimeText;
+
+    [SerializeField] private Image ImageTimer;
+
     [SerializeField] private GameObject TheTimerObject;
+
+
+
+
+    private float TimerReal;
+    private float TimerinProcent;
+    private float Timerset;
+
+
     public float timerinSeconds;
+    private float timeaftertimedeltatime;
+    
     bool TimerisStart;
 
     private void Start()
     {
+        Timerset = timerinSeconds;
         TimerisStart = false;
         GameMenager.TriggerTimer += StartTimerExist;
     }
@@ -23,7 +39,7 @@ public class Timer : MonoBehaviour
     {
         TimerisStarted();
 
-
+        ImageTimer.fillAmount =  TimerReal / Timerset;
 
     }
     private void StartTimerExist()
@@ -35,16 +51,20 @@ public class Timer : MonoBehaviour
     {
         if (TimerisStart)
         {
+            
             timerinSeconds -= Time.deltaTime;
 
-         
+
+             TimerReal = timerinSeconds;
+
+
             TheTimerObject .SetActive(true);
-            timerinSeconds -= Time.deltaTime;
+            
             DisplayTime(timerinSeconds);
         }
     
     }
-    void DisplayTime(float timeToDisplay)
+    public void DisplayTime(float timeToDisplay)
     {
         timeToDisplay = Mathf.CeilToInt(timeToDisplay);
         int minutes = Mathf.FloorToInt(timeToDisplay / 60);

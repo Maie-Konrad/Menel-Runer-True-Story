@@ -7,16 +7,19 @@ public class GameMenager : MonoBehaviour
 {
     [Header("Game over Reference")]
     [SerializeField] GameObject ObjectGameOver;
-    public Animator timelinel;
+    public Animator MenelAnimator;
 
 
     [Header("Activation Game Reference")]
     public bool GameStarted;
-    public GameObject CutSceneTimeLine;
+  
     public GameObject startbuttom;
 
     public  delegate void TriggerTimernow();
     public static TriggerTimernow TriggerTimer;
+
+
+    private bool AnimationMenel = false;
 
     public static GameMenager Instance { get; private set; }
     private void Awake()
@@ -32,7 +35,7 @@ public class GameMenager : MonoBehaviour
     }
     private void Start()
     {
-      
+       // EventAnimationON.AnimationisOver += AnimationisOverMenel;
     }
 
     private void Update()
@@ -49,13 +52,13 @@ public class GameMenager : MonoBehaviour
     }
     public void GameStatus()
     {
-        CutSceneTimeLine.gameObject.SetActive(true);
+        
         startbuttom.gameObject.SetActive(false);
 
         
         StartCoroutine(coluddownintro());
-        
-        
+       
+
     }
     public bool GameBeenStarted()
     {
@@ -74,9 +77,14 @@ public class GameMenager : MonoBehaviour
 
     IEnumerator coluddownintro()
     {
+        MenelAnimator.SetBool("GameIsStarted", true);
         yield return new WaitForSeconds(4f);
-        timelinel.enabled = true;
         GameStarted = true;
         TriggerTimer();
+
+    }
+    void AnimationisOverMenel()
+    {
+        AnimationMenel = true;
     }
 }
