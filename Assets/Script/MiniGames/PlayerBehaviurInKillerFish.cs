@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerBehaviurInKillerFish : MonoBehaviour
 {
     [SerializeField]int MaxHP;
+    [SerializeField] float GetDamageCooldownTime;
 
     private void Update()
     {
@@ -16,4 +18,6 @@ public class PlayerBehaviurInKillerFish : MonoBehaviour
         MaxHP = MaxHP - damage;
         Debug.Log("GetDamage :   " + damage);
     }
+
+  
 }
