@@ -1,22 +1,29 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using static TextGenerator;
 
 public class SelectOptionSystem : MonoBehaviour
 {
-    [SerializeField] GameObject[] buttoms;
+    
+    public  GameObject[] buttoms;
+
+    [Header("Buttoms Placement")]
     [SerializeField] bool IsVertical;
     [SerializeField] bool IsHorizontal;
 
+    [Header("Type Event")]
+    [SerializeField] bool UnityEventEnable;
+    public UnityEvent[] UnityInteractEvent;
+    public UnityEvent previusState;
 
-    public delegate void ChoisenButtom();
-    public static ChoisenButtom choisenButtom;
-
-
+    public delegate void InteractEventDelegate();
+    public static event InteractEventDelegate EventInteract;
 
     private int _choiseninde;
     private bool _selected;
+    private bool ChoisenSelect;
     public int choisenindex
     {
         get { return _choiseninde; }
@@ -28,7 +35,10 @@ public class SelectOptionSystem : MonoBehaviour
     {
         choisenindex = 0;
         ChangeColor(Color.red);
-
+        if (UnityEventEnable && buttoms.Length != UnityInteractEvent.Length) 
+        {
+            Debug.LogError("Buttoms and Unity Event Length must be same");
+        }
 
     }
 
@@ -46,9 +56,10 @@ public class SelectOptionSystem : MonoBehaviour
 
         if (buttoms == null)
         {
-            Debug.LogWarning(buttoms.ToString() + "  Array Is Epmty!! ");
+            Debug.LogWarning(buttoms.ToString() + "Buttoms  Array Is Epmty!! ");
 
         }
+       
 
 
     }
@@ -107,25 +118,50 @@ public class SelectOptionSystem : MonoBehaviour
         SelectChoice();
 
 
-        Debug.Log(choisenindex);
+        //Debug.Log(choisenindex);
     }
     private void SelectChoice()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!ChoisenSelect && Input.GetKeyDown(KeyCode.C))
         {
-
-            ChangeColor(Color.yellow);
-            SelectedButtom(choisenindex);
-            choisenButtom();
-
-
+          //  Debug.Log("Interact");
+            //Select butom ON
+            ChoisenSelect = true;
+            Interact();
         }
+        if (ChoisenSelect && Input.GetKeyDown(KeyCode.X))
+        {
+            //Select butom OFF
+           // Debug.Log("disable interact");
+
+            ChoisenSelect = false;
+            Interact();
+        }
+    }
+    private void Interact()
+    {
+        ChangeColor(Color.yellow);
+        SelectedButtom(choisenindex);
+        if (UnityEventEnable)
+        {
+            UnityInteractEvent[choisenindex]?.Invoke();
+            
+        }
+        else
+        {
+            EventInteract?.Invoke();
+        }
+        
+
     }
 
     private void SelectedButtom(int indexbuttom)
     {
+        // i forgot what this code do.xpp.
+
         if (_selected)
         {
+          
             _selected = false;
             ChangeColor(Color.red);
 
@@ -137,10 +173,12 @@ public class SelectOptionSystem : MonoBehaviour
         }
 
     }
+
     private void ChangeColor(Color colored)
     {
 
         buttoms[choisenindex].gameObject.GetComponent<Image>().color = colored;
     }
+
 
 }
