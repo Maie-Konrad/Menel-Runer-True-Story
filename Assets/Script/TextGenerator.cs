@@ -30,7 +30,7 @@ public class TextGenerator : MonoBehaviour
         }
         else if (isManual)
         {
-            Debug.LogError("TextToDisplayTMP is not assigned in inspector!");
+            Debug.LogError("TextToDisplayTMP is not assigned in inspector! Obecject : "+ gameObject.name );
         }
     }
  
@@ -105,7 +105,7 @@ public class TextGenerator : MonoBehaviour
             {
                 if (textToDisplayTMP == null)
                 {
-                    Debug.LogError("TextToDisplayTMP became null during typing!");
+                    Debug.LogError("TextToDisplayTMP became null during typing! in : " + gameObject.name);
                     yield break; 
                 }
                 textToDisplayTMP.text += text[i];

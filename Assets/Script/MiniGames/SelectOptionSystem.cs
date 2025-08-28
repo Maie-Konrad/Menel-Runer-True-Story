@@ -16,7 +16,7 @@ public class SelectOptionSystem : MonoBehaviour
     [Header("Type Event")]
     [SerializeField] bool UnityEventEnable;
     public UnityEvent[] UnityInteractEvent;
-    public UnityEvent previusState;
+    public UnityEvent BlockSelectet;
 
     public delegate void InteractEventDelegate();
     public static event InteractEventDelegate EventInteract;
@@ -29,8 +29,8 @@ public class SelectOptionSystem : MonoBehaviour
         get { return _choiseninde; }
         set { _choiseninde = Mathf.Clamp(value, 0, buttoms.Length - 1); }
     }
+ 
 
-   
     private void Start()
     {
         choisenindex = 0;
@@ -39,6 +39,7 @@ public class SelectOptionSystem : MonoBehaviour
         {
             Debug.LogError("Buttoms and Unity Event Length must be same");
         }
+        
 
     }
 
@@ -47,6 +48,7 @@ public class SelectOptionSystem : MonoBehaviour
         if (IsVertical)
         {
             MoveSelectVertical();
+          
         }
 
         if (IsHorizontal)
@@ -98,9 +100,12 @@ public class SelectOptionSystem : MonoBehaviour
         if (!_selected && Input.GetKeyDown(KeyCode.LeftArrow))
         {
             ChangeColor(Color.white);
-            if (choisenindex > 2)
+            if (choisenindex >= Mathf.CeilToInt(buttoms.Length / 2))
             {
-                choisenindex -= 3;
+                choisenindex -= Mathf.FloorToInt(buttoms.Length / 2);
+
+                
+              
             }
 
             ChangeColor(Color.red);
@@ -109,11 +114,12 @@ public class SelectOptionSystem : MonoBehaviour
         if (!_selected && Input.GetKeyDown(KeyCode.RightArrow))
         {
             ChangeColor(Color.white);
-            if (choisenindex <= 2)
+            if (choisenindex < Mathf.CeilToInt(buttoms.Length / 2))
             {
-                choisenindex += 3;
+                choisenindex += Mathf.FloorToInt(buttoms.Length / 2);
             }
             ChangeColor(Color.red);
+
         }
         SelectChoice();
 
@@ -152,6 +158,10 @@ public class SelectOptionSystem : MonoBehaviour
             EventInteract?.Invoke();
         }
         
+
+    }
+    public void BlockSelected()
+    {
 
     }
 

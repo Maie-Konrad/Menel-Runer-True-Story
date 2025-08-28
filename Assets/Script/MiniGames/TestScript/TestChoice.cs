@@ -10,7 +10,6 @@ public class TestChoice : MonoBehaviour
     [SerializeField]GameObject[] gameObjects;
     [SerializeField] GameObject Defultstate;
 
-
     [SerializeField]TextMeshProUGUI DefultText;
     [TextArea(3, 10)][SerializeField] string TestTextToMessage;
 
